@@ -1,0 +1,150 @@
+<div class="app-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="container-lg header-content">
+      <div class="header-left">
+        <h1 class="header-title">⚡ Micro Jira</h1>
+        <p class="header-subtitle">Lightweight personal task management</p>
+      </div>
+      <div class="header-right">
+        <button class="profile-btn" (click)="toggleProfile()" title="View profile">
+          <img [src]="profilePhoto()" alt="Profile" class="profile-photo" />
+        </button>
+      </div>
+    </div>
+    <!-- Profile Modal -->
+    <div *ngIf="showProfile()" class="profile-modal" (click)="toggleProfile()">
+      <div class="profile-card" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="toggleProfile()">✕</button>
+        <img [src]="profilePhoto()" alt="Profile" class="profile-modal-photo" />
+        <h3 class="profile-name">{{ profileName() }}</h3>
+        <p class="profile-title">{{ profileTitle() }}</p>
+        <p class="profile-bio">{{ profileBio() }}</p>
+        <div class="profile-links">
+          <a href="https://github.com/wsssixteen" target="_blank" class="profile-link">GitHub</a>
+          <a href="https://www.linkedin.com/in/ahmad-ridhwan-anuar-cfte-7a8310220/" target="_blank" class="profile-link">LinkedIn</a>
+          <a href="aridhwan.anuar@gmail.com" class="profile-link">Email</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container-lg main-content">
+    <!-- Add Task Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Add New Task</h5>
+      </div>
+      <div class="card-body">
+        <form (submit)="$event.preventDefault(); addTask()">
+            <div class="input-group">
+            <input 
+              id="newTitle" 
+              name="newTitle" 
+              type="text"
+              class="form-control form-control-lg"
+              [ngModel]="newTitle()" 
+              (ngModelChange)="newTitle.set($event)" 
+              placeholder="What do you need to do today?" 
+            />
+            <button type="submit" class="btn btn-primary btn-lg">
+              <span class="plus">✚</span> Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tasks List Section -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Your Tasks ({{ tasks().length }})</h5>
+        <span class="badge badge-secondary" *ngIf="tasks().length === 0">No tasks yet</span>
+      </div>
+      <div class="card-body">
+        <div *ngIf="tasks().length === 0; else tasksList" class="alert alert-info" role="alert">
+          <strong>No tasks yet!</strong> Add one above to get started. 🚀
+        </div>
+
+        <ng-template #tasksList>
+          <div class="task-list">
+            <!-- Active Tasks -->
+            <div class="tasks-section">
+              <h6 class="section-title">Active Tasks ({{ activeTasks.length }})</h6>
+              <div *ngIf="activeTasks.length === 0" class="alert alert-light">No active tasks</div>
+              <div *ngFor="let t of activeTasks" class="task-item">
+                <ng-container *ngIf="editingId() === t.id; else viewModeActive">
+                  <div class="task-edit-form">
+                    <input 
+                      [(ngModel)]="editTitle" 
+                      type="text" 
+                      class="form-control"
+                      placeholder="Update task title..."
+                    />
+                    <div class="task-edit-actions">
+                      <button (click)="saveEdit(t.id)" class="btn btn-success btn-sm" title="Save">✓</button>
+                      <button (click)="cancelEdit()" class="btn btn-secondary btn-sm" title="Cancel">✕</button>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-template #viewModeActive>
+                  <div class="task-content">
+                    <div class="task-text">
+                      <p class="task-title">{{ t.title }}</p>
+                      <small class="task-id">#{{ t.id }}</small>
+                    </div>
+                    <div class="task-actions">
+                      <button (click)="startEdit(t)" class="icon-btn icon-edit" title="Edit">
+                        ✎
+                      </button>
+                      <button (click)="completeTask(t.id)" class="icon-btn icon-complete" title="Mark complete">
+                        ✓
+                      </button>
+                      <button (click)="confirmDelete(t.id)" class="icon-btn icon-delete" title="Delete">
+                        🗑
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- Completed Tasks (collapsible) -->
+            <div class="tasks-section mt-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <h6 class="section-title">Completed ({{ completedTasks.length }})</h6>
+                <button class="icon-btn icon-toggle" (click)="toggleCompleted()" [attr.aria-expanded]="showCompleted()" title="Toggle completed list">{{ showCompleted() ? '▾' : '▸' }}</button>
+              </div>
+
+              <div *ngIf="completedTasks.length === 0" class="alert alert-light">No completed tasks</div>
+
+              <div *ngIf="showCompleted()">
+                <div *ngFor="let t of completedTasks" class="task-item completed">
+                  <div class="task-content">
+                    <div class="task-text">
+                      <p class="task-title">{{ t.title }}</p>
+                      <small class="task-id">#{{ t.id }}</small>
+                    </div>
+                    <div class="task-actions">
+                      <button (click)="completeTask(t.id)" class="icon-btn icon-undo" title="Undo complete">↶</button>
+                      <button (click)="confirmDelete(t.id)" class="icon-btn icon-delete" title="Delete">🗑</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Micro Jira. Built with Angular & ASP.NET Core</p><button (click)="resetTasks()" class="btn btn-sm reset-btn" title="Reset page to the original state"> 🔄 Reset Page</button>
+  </footer>
+</div>
+
+<router-outlet />

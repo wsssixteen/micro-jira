@@ -1,0 +1,35 @@
+services:
+  # 1. SQL Server Container
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest # Using a standard SQL Server image
+    container_name: taskmanager-db
+    environment:
+      # CRITICAL: Set a strong password (minimum 8 characters)
+      SA_PASSWORD: "StrongP@ssw0rd!" 
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433" # Optional: Map port for external tools (like SSMS)
+    volumes:
+      - sqlserver_data:/var/opt/mssql # Persist data across container restarts
+    
+  # 2. Your ASP.NET Core API Container
+  api:
+    image: taskmanager-api # Name of the image you built previously
+    container_name: taskmanager-api-container
+    build:
+      context: .
+      dockerfile: Dockerfile # Points to the Dockerfile in the current directory
+    ports:
+      - "9000:8080"
+    depends_on:
+      - db # Ensure the database starts before the API
+    environment:
+      # CRITICAL: Update the Connection String
+      # The server name is the service name defined above: 'db'
+      ConnectionStrings__DefaultConnection: "Server=db;Database=TaskManagerDB;User Id=sa;Password=StrongP@ssw0rd!;Encrypt=False;TrustServerCertificate=True"
+
+    # CRITICAL ADDITION: Use the wait script before starting the API
+    command: ["./wait-for-it.sh", "db", "1433", "dotnet", "TaskManager.API.dll"]
+
+volumes:
+  sqlserver_data: # Define the named volume for persistence
