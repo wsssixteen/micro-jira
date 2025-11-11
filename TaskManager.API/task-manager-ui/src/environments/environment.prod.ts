@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://microjira.reddesert-44c5d750.westeurope.azurecontainerapps.io',
+  apiUrl: 'https://microjira.reddesert-44c5d750.westeurope.azurecontainerapps.io/api',
 };
