@@ -27,12 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd task-manager-ui
+          cd TaskManager.API/task-manager-ui
           npm install
 
       - name: Build Angular app
         run: |
-          cd task-manager-ui
+          cd TaskManager.API/task-manager-ui
           npm run build -- --configuration production
       - name: Build And Deploy
         id: builddeploy
@@ -45,7 +45,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "TaskManager.API/task-manager-ui" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "dist/task-manager-ui/browser" # Built app content directory - optional
+          output_location: "TaskManager.API/task-manager-ui/dist/task-manager-ui/browser" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
