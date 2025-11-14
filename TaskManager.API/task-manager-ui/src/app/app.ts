@@ -46,15 +46,17 @@ export class App {
     this.showCompleted.update(v => !v);
   }
 
-  constructor(private taskService: TaskService) {}
-
-  ngOnInit(): void {
+  constructor(private taskService: TaskService) {
+    // initial load
     this.loadTasks();
   }
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
-      next: (items) => this.tasks.set(items),
+      next: (items) => {
+        console.log('LOAD TASKS FROM API:', items);
+        this.tasks.set(items);
+      },
       error: (err) => console.error('Failed to load tasks', err)
     });
   }
