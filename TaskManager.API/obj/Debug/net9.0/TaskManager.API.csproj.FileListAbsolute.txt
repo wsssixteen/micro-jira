@@ -173,3 +173,4 @@ C:\Users\vice4\Documents\7. Code Projects\4. Task Manager\TaskManager.API\bin\De
 C:\Users\vice4\Documents\7. Code Projects\4. Task Manager\TaskManager.API\bin\Debug\net9.0\task-manager-ui\tsconfig.json
 C:\Users\vice4\Documents\7. Code Projects\4. Task Manager\TaskManager.API\bin\Debug\net9.0\task-manager-ui\tsconfig.spec.json
 C:\Users\vice4\Documents\7. Code Projects\4. Task Manager\TaskManager.API\bin\Debug\net9.0\task-manager-ui\dist\task-manager-ui\prerendered-routes.json
+C:\Users\vice4\Documents\7. Code Projects\4. Task Manager\TaskManager.API\obj\Debug\net9.0\TaskManager.API.sourcelink.json

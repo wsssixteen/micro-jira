@@ -11,15 +11,28 @@ builder.Services.AddSwaggerGen();
 
 // Register EF Core DbContext with connection string
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(
+        conn,
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null);
+        });
+});
 
 // Allow CORS for frontend
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin()
+    options.AddDefaultPolicy(policy =>
+        policy.WithOrigins("https://lemon-water-02d583710.3.azurestaticapps.net")
               .AllowAnyMethod()
               .AllowAnyHeader());
+              //.AllowAnyOrigin());
 });
 
 var app = builder.Build();
@@ -64,8 +77,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
