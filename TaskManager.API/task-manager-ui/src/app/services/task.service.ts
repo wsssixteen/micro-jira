@@ -20,7 +20,13 @@ export class TaskService {
 
   getTasks(): Observable<TaskItem[]> {
     console.log('TRACE 2: HTTP GET request sent to API URL:', this.API_URL);
-    return this.http.get<TaskItem[]>(this.API_URL);
+    return this.http.get<TaskItem[]>(this.API_URL, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
+    });
   }
 
   private handleError(error: HttpErrorResponse) {

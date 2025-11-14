@@ -1,8 +1,0 @@
-{
-  "routes": [
-    {
-      "route": "/api/*",
-      "rewrite": "https://microjira.reddesert-44c5d750.westeurope.azurecontainerapps.io/api/*"
-    }
-  ]
-}
