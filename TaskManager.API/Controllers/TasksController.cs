@@ -21,12 +21,14 @@ namespace TaskManager.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks()
         {
-            _logger.LogInformation("➡️ GET /api/tasks called - fetching tasks from database...");
+            _logger.LogInformation("TRACE 3: HttpGet - fetching tasks from database...");
 
             try
             {
                 var tasks = await _context.Tasks.ToListAsync();
                 _logger.LogInformation("✔️ Loaded {Count} tasks from DB", tasks.Count);
+                _logger.LogInformation("Tasks returned: {Ids}", string.Join(", ", tasks.Select(t => t.Id)));
+
                 return tasks;
             }
             catch (Exception ex)
@@ -42,11 +44,7 @@ namespace TaskManager.API.Controllers
             var task = await _context.Tasks.FindAsync(id);
             if (task == null) return NotFound();
 
-            _logger.LogInformation(
-            "GET /api/tasks at {Time}: count={Count}, ids={Ids}",
-            DateTime.UtcNow,
-            task.Id,
-            string.Join(",", task.IsComplete));
+            _logger.LogInformation("TRACE 3: GET /api/tasks/{Id} -> Found task. Returned Id={TaskId}", id, task.Id);
 
             return task;
         }
