@@ -47,7 +47,7 @@ export class App {
   }
 
   constructor(private taskService: TaskService) {
-    // initial load
+    console.log('TRACE 1: Component initialized. Starting loadTasks().');
     this.loadTasks();
   }
 

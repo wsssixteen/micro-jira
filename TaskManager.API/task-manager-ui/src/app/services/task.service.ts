@@ -19,7 +19,8 @@ export class TaskService {
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<TaskItem[]> {
-    return this.http.get<TaskItem[]>(this.API_URL); // Clean and simple
+    console.log('TRACE 2: HTTP GET request sent to API URL:', this.API_URL);
+    return this.http.get<TaskItem[]>(this.API_URL);
   }
 
   private handleError(error: HttpErrorResponse) {
