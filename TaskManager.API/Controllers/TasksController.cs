@@ -10,20 +10,44 @@ namespace TaskManager.API.Controllers
     public class TasksController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<TasksController> _logger;
 
-        public TasksController(AppDbContext context)
+        public TasksController(AppDbContext context, ILogger<TasksController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks() => await _context.Tasks.ToListAsync();
+        public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks()
+        {
+            _logger.LogInformation("➡️ GET /api/tasks called - fetching tasks from database...");
+
+            try
+            {
+                var tasks = await _context.Tasks.ToListAsync();
+                _logger.LogInformation("✔️ Loaded {Count} tasks from DB", tasks.Count);
+                return tasks;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "❌ ERROR loading tasks from DB");
+                return StatusCode(500, "Failed to load tasks");
+            }
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskItem>> GetTask(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
             if (task == null) return NotFound();
+
+            _logger.LogInformation(
+            "GET /api/tasks at {Time}: count={Count}, ids={Ids}",
+            DateTime.UtcNow,
+            task.Id,
+            string.Join(",", task.IsComplete));
+
             return task;
         }
         
