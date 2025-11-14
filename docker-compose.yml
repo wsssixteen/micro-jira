@@ -1,7 +1,7 @@
 services:
   # 1. SQL Server Container
   db:
-    image: mcr.microsoft.com/mssql/server:2019-latest # Using a standard SQL Server image
+    image: mcr.microsoft.com/mssql/server:2022-latest # Using a standard SQL Server image
     container_name: taskmanager-db
     environment:
       # CRITICAL: Set a strong password (minimum 8 characters)

@@ -32,7 +32,6 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("https://lemon-water-02d583710.3.azurestaticapps.net")
               .AllowAnyMethod()
               .AllowAnyHeader());
-              //.AllowAnyOrigin());
 });
 
 var app = builder.Build();

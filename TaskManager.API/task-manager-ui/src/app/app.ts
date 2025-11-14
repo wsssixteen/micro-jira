@@ -46,8 +46,9 @@ export class App {
     this.showCompleted.update(v => !v);
   }
 
-  constructor(private taskService: TaskService) {
-    // initial load
+  constructor(private taskService: TaskService) {}
+
+  ngOnInit(): void {
     this.loadTasks();
   }
 
