@@ -3,6 +3,7 @@ import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
+import { tap } from 'rxjs/operators';
 
 export interface TaskItem {
   id?: number;
@@ -26,7 +27,7 @@ export class TaskService {
         'Pragma': 'no-cache',
         'Expires': '0',
       }
-    });
+    }).pipe(tap(data => console.log('INTERCEPTOR CHECK: RAW DATA BEFORE RETURN:', data)));
   }
 
   private handleError(error: HttpErrorResponse) {
