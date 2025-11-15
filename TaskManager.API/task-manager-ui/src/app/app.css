@@ -66,14 +66,32 @@ body {
   text-align: center;
 }
 
-.header-title-wrap {
-  text-align: center;
-}
-
 .header-right {
   flex: 0 0 auto;
   margin-left: 2rem;
 }
+
+.header-title-wrap {
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .header-left {
+    flex: 0 0 auto;
+    justify-content: flex-start; 
+  }
+
+  .header-center {
+    flex: 1;
+    text-align: center;
+  }
+
+  .header-right {
+    flex: 0 0 auto;
+    margin-left: 0;
+  }
+}
+
 
 /* Profile Photo Button */
 .profile-btn {
