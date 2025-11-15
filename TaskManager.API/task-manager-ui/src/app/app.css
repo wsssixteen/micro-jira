@@ -71,10 +71,6 @@ body {
   margin-left: 2rem;
 }
 
-.header-title-wrap {
-  text-align: center;
-}
-
 @media (max-width: 600px) {
   .header-left {
     flex: 0 0 auto;
