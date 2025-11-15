@@ -72,13 +72,6 @@ export class App {
 
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem('theme', newMode ? 'dark' : 'light');
-
-        const root = document.documentElement;
-        if (newMode) {
-          root.classList.add('dark-mode');
-        } else {
-          root.classList.remove('dark-mode');
-        }
       }
 
       return newMode;

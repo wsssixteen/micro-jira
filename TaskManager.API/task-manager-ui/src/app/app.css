@@ -61,6 +61,10 @@ body {
   justify-content: center;
 }
 
+.header-center {
+  text-align: center;
+}
+
 .header-title-wrap {
   text-align: center;
 }
