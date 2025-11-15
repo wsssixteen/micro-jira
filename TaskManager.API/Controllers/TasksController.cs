@@ -26,14 +26,14 @@ namespace TaskManager.API.Controllers
             try
             {
                 var tasks = await _context.Tasks.ToListAsync();
-                _logger.LogInformation("✔️ Loaded {Count} tasks from DB", tasks.Count);
+                _logger.LogInformation("Loaded {Count} tasks from DB", tasks.Count);
                 _logger.LogInformation("Tasks returned: {Ids}", string.Join(", ", tasks.Select(t => t.Id)));
 
                 return tasks;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ ERROR loading tasks from DB");
+                _logger.LogError(ex, "ERROR loading tasks from DB");
                 return StatusCode(500, "Failed to load tasks");
             }
         }
