@@ -17,6 +17,9 @@ import { switchMap } from 'rxjs/operators';
 export class App {
   protected readonly title = signal('task-manager-ui');
 
+  // track when first load is done
+  initialized = signal(false);
+
   // UI state
   tasks = signal<TaskItem[]>([]);
   newTitle = signal('');
@@ -78,8 +81,12 @@ export class App {
       next: (items) => {
         console.log('LOAD TASKS FROM API:', items);
         this.tasks.set(items);
+        this.initialized.set(true);
       },
-      error: (err) => console.error('Failed to load tasks', err)
+      error: (err) => {
+        console.error('Failed to load tasks', err);
+        this.initialized.set(true);
+      }
     });
   }
 

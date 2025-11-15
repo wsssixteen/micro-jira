@@ -67,7 +67,7 @@
         <h5 class="mb-0">Your Tasks ({{ tasks().length }})</h5>
         <span class="badge badge-secondary" *ngIf="tasks().length === 0">No tasks yet</span>
       </div>
-      <div class="card-body">
+      <div class="card-body" *ngIf="initialized()">
         <div *ngIf="tasks().length === 0; else tasksList" class="alert alert-info" role="alert">
           <strong>No tasks yet!</strong> Add one above to get started. 🚀
         </div>
