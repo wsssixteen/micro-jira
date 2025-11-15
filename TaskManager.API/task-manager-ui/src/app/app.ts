@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskService, TaskItem } from './services/task.service';
-// added due to 
+import { isPlatformBrowser } from '@angular/common';
+// added due to reset
 import { switchMap } from 'rxjs/operators'; 
 
 @Component({
@@ -34,6 +35,8 @@ export class App {
   // collapsed by default for portfolio presentation
   showCompleted = signal(false);
 
+  private platformId = inject(PLATFORM_ID);
+
   // convenience getters for view
   get activeTasks() {
     return this.tasks().filter(t => !t.isComplete);
@@ -52,17 +55,22 @@ export class App {
     // check dark mode preference
     this.loadTasks();
     // Optional: Check local storage for user's preference on startup
-    const savedMode = localStorage.getItem('theme');
-    if (savedMode === 'dark') {
-      this.isDarkMode.set(true);
+    if (isPlatformBrowser(this.platformId)) {
+      const savedMode = localStorage.getItem('theme');
+      if (savedMode === 'dark') {
+        this.isDarkMode.set(true);
+      }
     }
   }
 
   toggleDarkMode(): void {
-    this.isDarkMode.update(value => !value);
-    
-    // Save preference to local storage
-    localStorage.setItem('theme', this.isDarkMode() ? 'dark' : 'light');
+    this.isDarkMode.update(value => {
+      const newMode = !value;
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('theme', newMode ? 'dark' : 'light');
+      }
+      return newMode;
+    });
   }
 
   loadTasks(): void {
