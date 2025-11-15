@@ -118,8 +118,6 @@
                 <button class="icon-btn icon-toggle" (click)="toggleCompleted()" [attr.aria-expanded]="showCompleted()" title="Toggle completed list">{{ showCompleted() ? '▾' : '▸' }}</button>
               </div>
 
-              <div *ngIf="completedTasks.length === 0" class="alert alert-light">No completed tasks</div>
-
               <div *ngIf="showCompleted()">
                 <div *ngFor="let t of completedTasks" class="task-item completed">
                   <div class="task-content">
@@ -134,6 +132,9 @@
                   </div>
                 </div>
               </div>
+
+              <div *ngIf="completedTasks.length === 0" class="alert alert-light">No completed tasks</div>
+
             </div>
           </div>
         </ng-template>
