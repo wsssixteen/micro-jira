@@ -709,3 +709,103 @@ body {
     font-size: 16px; /* Prevents zoom on iOS */
   }
 }
+
+/* DARK MODE OVERRIDES */
+
+.app-container.dark-mode {
+    /* 1. Override CSS Variables for Dark Mode */
+    /* Target the container to redefine local variables when .dark-mode is present */
+    --primary-color: #42A5F5; /* Keep a nice, clear blue */
+    --primary-dark: #2196F3;
+    --light-bg: #292929; /* Darker background for main surfaces */
+    --border-color: #3A3A3A;
+    --text-dark: #E0E0E0; /* Light text for main content */
+    --text-muted: #999999; /* Muted light text */
+    --danger-color: #EF5350; /* Slightly brighter red for visibility */
+    --success-color: #66BB6A; /* Slightly brighter green for visibility */
+}
+
+/* 2. Global Background/Text */
+.app-container.dark-mode {
+    background-color: #121212; /* Deep Black Background for the Body */
+}
+.app-container.dark-mode body {
+    background-color: #121212; /* Ensure body also matches */
+}
+
+/* 3. Header (Gradient Replacement) */
+.app-container.dark-mode .header {
+    /* Replace gradient with a solid color for better contrast */
+    background: var(--light-bg); 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--border-color);
+}
+/* Ensure header content text is visible if not inheriting from vars */
+.app-container.dark-mode .header-title,
+.app-container.dark-mode .header-subtitle {
+    color: var(--text-dark);
+}
+
+/* 4. Task Item Backgrounds (Not using CSS vars for background, must override) */
+.app-container.dark-mode .task-item {
+    background: #1E1E1E; /* Dark Charcoal for task item surfaces */
+    border-left-color: var(--primary-color);
+}
+.app-container.dark-mode .task-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* 5. Card Backgrounds (Not using CSS vars for background, must override) */
+.app-container.dark-mode .card {
+    background: #1E1E1E;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.app-container.dark-mode .card-header {
+    background-color: var(--light-bg);
+    border-bottom-color: var(--border-color);
+}
+
+/* 6. Inputs (Form Controls) */
+.app-container.dark-mode .form-control {
+    background-color: #333333;
+    color: var(--text-dark);
+    border-color: #555555;
+}
+.app-container.dark-mode .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.25); /* Adjusted shadow to use primary blue */
+}
+
+/* 7. Footer */
+.app-container.dark-mode .footer {
+    background-color: var(--light-bg);
+    border-top-color: var(--border-color);
+    color: var(--text-muted);
+}
+
+/* 8. Alerts (Bootstrap elements often need specific dark mode rules) */
+.app-container.dark-mode .alert-info {
+    background-color: #1A3645;
+    border-color: #216D8A;
+    color: #8FD8F1;
+}
+.app-container.dark-mode .alert-light { /* For "No active tasks" */
+    background-color: #292929;
+    color: #A0A0A0;
+    border-color: #3a3a3a;
+}
+
+/* 9. Dark Mode Toggle Button Styling */
+.dark-mode-toggle-btn {
+    background: none;
+    border: none;
+    color: white; /* Initial color is white from the header */
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 15px; 
+    transition: color 0.2s ease;
+}
+.app-container.dark-mode .dark-mode-toggle-btn {
+    color: var(--text-dark); /* Color change when in dark mode */
+}

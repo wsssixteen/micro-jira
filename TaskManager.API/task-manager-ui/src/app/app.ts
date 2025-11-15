@@ -21,6 +21,7 @@ export class App {
   newTitle = signal('');
   editingId = signal<number | null>(null);
   editTitle = signal('');
+  isDarkMode = signal(false);
   
   // Profile state
   showProfile = signal(false);
@@ -48,7 +49,20 @@ export class App {
 
   constructor(private taskService: TaskService) {
     console.log('TRACE 1: Component initialized. Starting loadTasks().');
+    // check dark mode preference
     this.loadTasks();
+    // Optional: Check local storage for user's preference on startup
+    const savedMode = localStorage.getItem('theme');
+    if (savedMode === 'dark') {
+      this.isDarkMode.set(true);
+    }
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode.update(value => !value);
+    
+    // Save preference to local storage
+    localStorage.setItem('theme', this.isDarkMode() ? 'dark' : 'light');
   }
 
   loadTasks(): void {

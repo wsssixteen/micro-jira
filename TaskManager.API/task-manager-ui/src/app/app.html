@@ -3,6 +3,11 @@
   <header class="header">
     <div class="container-lg header-content">
       <div class="header-left">
+        <button class="dark-mode-toggle-btn" (click)="toggleDarkMode()" title="Toggle dark mode">
+          <span *ngIf="!isDarkMode()">☀️</span>
+          <span *ngIf="isDarkMode()">🌙</span>
+        </button>
+
         <h1 class="header-title">⚡ Micro Jira</h1>
         <p class="header-subtitle">Lightweight personal task management</p>
       </div>
@@ -118,6 +123,8 @@
                 <button class="icon-btn icon-toggle" (click)="toggleCompleted()" [attr.aria-expanded]="showCompleted()" title="Toggle completed list">{{ showCompleted() ? '▾' : '▸' }}</button>
               </div>
 
+              <div *ngIf="completedTasks.length === 0" class="alert alert-light">No completed tasks</div>
+
               <div *ngIf="showCompleted()">
                 <div *ngFor="let t of completedTasks" class="task-item completed">
                   <div class="task-content">
@@ -132,9 +139,7 @@
                   </div>
                 </div>
               </div>
-
-              <div *ngIf="completedTasks.length === 0" class="alert alert-light">No completed tasks</div>
-
+              
             </div>
           </div>
         </ng-template>
