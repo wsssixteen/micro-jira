@@ -59,33 +59,43 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-right: 1rem;
 }
 
 .header-center {
   flex: 1;
   text-align: center;
+  padding: 0 1rem; 
+  min-width: 0;
 }
 
 .header-right {
   flex: 0 0 auto;
-  margin-left: 2rem;
+  margin-left: 0;
+  padding-left: 1rem;
 }
 
 @media (max-width: 600px) {
+  .header-content {
+    flex-wrap: wrap;
+  }
+
   .header-left {
     flex: 0 0 auto;
     justify-content: flex-start; 
   }
-
-  .header-center {
-    flex: 1;
-    text-align: center;
-  }
-
+  
   .header-right {
     flex: 0 0 auto;
     margin-left: 0;
   }
+  
+    .header-center {
+      order: 2;
+      flex: 0 0 100%;
+      margin: 0.5rem;
+      text-align: center;
+    }
 }
 
 
@@ -649,7 +659,7 @@ body {
   }
 
   .header-subtitle {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .task-content {
