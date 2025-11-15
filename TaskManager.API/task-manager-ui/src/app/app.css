@@ -70,14 +70,13 @@ body {
   margin-left: 1rem;
 }
 
+/* Stack all header content elements vertically */
 @media (max-width: 600px) {
-  /* 1. Stack all header content elements vertically */
   .header-content {
     flex-direction: column;
     justify-content: center;
   }
 
-  /* 2. Center-align all text and content within the header sections */
   .header-left,
   .header-center,
   .header-right {
@@ -86,22 +85,20 @@ body {
     justify-content: center;
   }
 
-  /* 3. Add spacing between stacked elements for visual flow */
   .header-left {
     order: 1;
     margin-bottom: 1rem;
   }
 
   .header-center {
-    order: 2; /* Main title/subtitle comes next */
+    order: 2;
     margin-bottom: 0.75rem;
   }
 
   .header-right {
-    order: 3; /* Dark mode toggle/reset button at the bottom */
+    order: 3;
   }
 
-  /* Ensure the text in the center is centered */
   .header-title,
   .header-subtitle {
     text-align: center;
