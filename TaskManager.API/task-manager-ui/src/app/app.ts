@@ -69,12 +69,22 @@ export class App {
   toggleDarkMode(): void {
     this.isDarkMode.update(value => {
       const newMode = !value;
+
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem('theme', newMode ? 'dark' : 'light');
+
+        const root = document.documentElement;
+        if (newMode) {
+          root.classList.add('dark-mode');
+        } else {
+          root.classList.remove('dark-mode');
+        }
       }
+
       return newMode;
     });
   }
+
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe({

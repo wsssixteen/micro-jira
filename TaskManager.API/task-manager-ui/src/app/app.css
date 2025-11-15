@@ -600,6 +600,12 @@ body {
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 /* Utility Classes */
@@ -724,126 +730,142 @@ body {
 
 /* DARK MODE OVERRIDES */
 
-.app-container.dark-mode {
-    /* 1. Override CSS Variables for Dark Mode */
-    /* Target the container to redefine local variables when .dark-mode is present */
-    --primary-color: #42A5F5; /* Keep a nice, clear blue */
-    --primary-dark: #2196F3;
-    --light-bg: #292929; /* Darker background for main surfaces */
-    --border-color: #3A3A3A;
-    --text-dark: #E0E0E0; /* Light text for main content */
-    --text-muted: #999999; /* Muted light text */
-    --danger-color: #EF5350; /* Slightly brighter red for visibility */
-    --success-color: #66BB6A; /* Slightly brighter green for visibility */
+/* 1. Override CSS Variables for Dark Mode */
+html.dark-mode .app-container {
+  --primary-color: #42A5F5; /* Keep a nice, clear blue */
+  --primary-dark: #2196F3;
+  --light-bg: #292929;      /* Darker background for main surfaces */
+  --border-color: #3A3A3A;
+  --text-dark: #E0E0E0;     /* Light text for main content */
+  --text-muted: #999999;    /* Muted light text */
+  --danger-color: #EF5350;  /* Slightly brighter red for visibility */
+  --success-color: #66BB6A; /* Slightly brighter green for visibility */
+
+  background-color: #121212; /* Deep black background behind cards */
 }
 
-/* 2. Global Background/Text */
-.app-container.dark-mode {
-    background-color: #121212; /* Deep Black Background for the Body */
+/* 2. Task Item Backgrounds (not using vars for background, so override) */
+html.dark-mode .task-item {
+  background: #1E1E1E; /* Dark charcoal for task surfaces */
+  border-left-color: var(--primary-color);
 }
-
-/* 3. Header (Gradient Replacement) 
-.app-container.dark-mode .header {
-    background: var(--light-bg); 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    border-bottom: 1px solid var(--border-color);
-}
-.app-container.dark-mode .header-title,
-.app-container.dark-mode .header-subtitle {
-    color: var(--text-dark);
-} */
-
-/* 4. Task Item Backgrounds (Not using CSS vars for background, must override) */
-.app-container.dark-mode .task-item {
-    background: #1E1E1E; /* Dark Charcoal for task item surfaces */
-    border-left-color: var(--primary-color);
-}
-.app-container.dark-mode .task-item.completed {
+html.dark-mode .task-item.completed {
   border-left-color: var(--success-color);
 }
-.app-container.dark-mode .task-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+html.dark-mode .task-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* 5. Card Backgrounds (Not using CSS vars for background, must override) */
-.app-container.dark-mode .card {
-    background: #1E1E1E;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+/* 3. Card Backgrounds */
+html.dark-mode .card {
+  background: #1E1E1E;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-.app-container.dark-mode .card-header {
-    background-color: var(--light-bg);
-    border-bottom-color: var(--border-color);
+html.dark-mode .card-header {
+  background-color: var(--light-bg);
+  border-bottom-color: var(--border-color);
 }
 
-/* 6. Inputs (Form Controls) */
-.app-container.dark-mode .form-control {
-    background-color: #333333;
-    color: var(--text-dark);
-    border-color: #555555;
+/* 4. Inputs (Form Controls) */
+html.dark-mode .form-control {
+  background-color: #333333;
+  color: var(--text-dark);
+  border-color: #555555;
 }
-.app-container.dark-mode .form-control:focus {
-    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.25); /* Adjusted shadow to use primary blue */
+html.dark-mode .form-control:focus {
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.25); /* primary blue */
 }
-/* lighter placeholder for dark mode */
-.app-container.dark-mode .form-control::placeholder {
-  color: #bbbbbb;
-}
-
-/* 7. Footer */
-.app-container.dark-mode .footer {
-    background-color: var(--light-bg);
-    border-top-color: var(--border-color);
-    color: var(--text-muted);
+html.dark-mode .form-control::placeholder {
+  color: #bbbbbb; /* lighter placeholder for dark mode */
 }
 
-/* 8. Alerts (Bootstrap elements often need specific dark mode rules) */
-.app-container.dark-mode .alert-info {
-    background-color: #1A3645;
-    border-color: #216D8A;
-    color: #8FD8F1;
-}
-.app-container.dark-mode .alert-light { /* For "No active tasks" */
-    background-color: #292929;
-    color: #A0A0A0;
-    border-color: #3a3a3a;
+/* 5. Footer */
+html.dark-mode .footer {
+  background-color: var(--light-bg);
+  border-top-color: var(--border-color);
+  color: var(--text-muted);
 }
 
-/* 9. Dark Mode Toggle Button Styling */
+/* 6. Alerts */
+html.dark-mode .alert-info {
+  background-color: #1A3645;
+  border-color: #216D8A;
+  color: #8FD8F1;
+}
+html.dark-mode .alert-light { /* “No active tasks” */
+  background-color: #292929;
+  color: #A0A0A0;
+  border-color: #3a3a3a;
+}
+
+/* 7. Dark Mode Toggle Button Styling */
+/* Keep it inline to the left of the title */
 .dark-mode-toggle-btn {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
   background: none;
   border: none;
   color: white;
   font-size: 1.25rem;
   cursor: pointer;
   padding: 0;
-  margin: 0;
+  margin-right: 15px;
   transition: color 0.2s ease;
 }
 
-.app-container.dark-mode .dark-mode-toggle-btn {
+html.dark-mode .dark-mode-toggle-btn {
   color: var(--text-dark);
 }
 
-/* 10. Reset button */ 
-.reset-btn {
-  margin-left: 0.75rem;
-  border-radius: 4px;
+/* 8. Reset button */
+/* Footer reset button */
+.footer .reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
+
   background: transparent;
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
+
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
-.reset-btn:hover {
+/* Emoji/icon inside stays small and clean */
+.footer .reset-btn span {
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+/* Hover / active */
+.footer .reset-btn:hover {
   background: rgba(0, 123, 255, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.25);
 }
 
-/* in dark mode, keep it visible */
-.app-container.dark-mode .reset-btn {
+.footer .reset-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Focus state */
+.footer .reset-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+/* Dark mode: same accent color, just slightly softer background on hover */
+.app-container.dark-mode .footer .reset-btn {
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+.app-container.dark-mode .footer .reset-btn:hover {
+  background: rgba(66, 165, 245, 0.12);
+}
+
