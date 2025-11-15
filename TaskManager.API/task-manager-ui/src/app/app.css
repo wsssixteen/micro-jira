@@ -758,6 +758,9 @@ body {
     background: #1E1E1E; /* Dark Charcoal for task item surfaces */
     border-left-color: var(--primary-color);
 }
+.task-item.completed {
+  border-left-color: var(--success-color);
+}
 .app-container.dark-mode .task-item:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
