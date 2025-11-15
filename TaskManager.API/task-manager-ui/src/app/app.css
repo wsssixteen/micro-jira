@@ -54,19 +54,16 @@ body {
 }
 
 .header-left {
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  text-align: left;
+  justify-content: center;
 }
 
-.header-title-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.header-title-wrap {
+  text-align: center;
 }
-
 
 .header-right {
   flex-shrink: 0;
@@ -387,6 +384,11 @@ body {
 .form-control-lg {
   padding: 0.875rem 1.25rem;
   font-size: 1.1rem;
+}
+
+/* default placeholder neede due to dark mode*/
+.form-control::placeholder {
+  color: var(--text-muted);
 }
 
 /* Buttons */
@@ -740,18 +742,16 @@ body {
     background-color: #121212; /* Deep Black Background for the Body */
 }
 
-/* 3. Header (Gradient Replacement) */
+/* 3. Header (Gradient Replacement) 
 .app-container.dark-mode .header {
-    /* Replace gradient with a solid color for better contrast */
     background: var(--light-bg); 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     border-bottom: 1px solid var(--border-color);
 }
-/* Ensure header content text is visible if not inheriting from vars */
 .app-container.dark-mode .header-title,
 .app-container.dark-mode .header-subtitle {
     color: var(--text-dark);
-}
+} */
 
 /* 4. Task Item Backgrounds (Not using CSS vars for background, must override) */
 .app-container.dark-mode .task-item {
@@ -782,6 +782,10 @@ body {
 .app-container.dark-mode .form-control:focus {
     box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.25); /* Adjusted shadow to use primary blue */
 }
+/* lighter placeholder for dark mode */
+.app-container.dark-mode .form-control::placeholder {
+  color: #bbbbbb;
+}
 
 /* 7. Footer */
 .app-container.dark-mode .footer {
@@ -804,15 +808,39 @@ body {
 
 /* 9. Dark Mode Toggle Button Styling */
 .dark-mode-toggle-btn {
-    background: none;
-    border: none;
-    color: white; /* Initial color is white from the header */
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 15px; 
-    transition: color 0.2s ease;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: color 0.2s ease;
 }
+
 .app-container.dark-mode .dark-mode-toggle-btn {
-    color: var(--text-dark); /* Color change when in dark mode */
+  color: var(--text-dark);
+}
+
+/* 10. Reset button */ 
+.reset-btn {
+  margin-left: 0.75rem;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.reset-btn:hover {
+  background: rgba(0, 123, 255, 0.08);
+}
+
+/* in dark mode, keep it visible */
+.app-container.dark-mode .reset-btn {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }

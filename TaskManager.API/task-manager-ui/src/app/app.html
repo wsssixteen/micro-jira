@@ -7,13 +7,13 @@
           <span *ngIf="!isDarkMode()">☀️</span>
           <span *ngIf="isDarkMode()">🌙</span>
         </button>
-      </div>
-      <div class="header-center">
-        <div class="header-title-group">
+
+        <div class="header-title-wrap">
           <h1 class="header-title">⚡ Micro Jira</h1>
           <p class="header-subtitle">Lightweight personal task management</p>
         </div>
       </div>
+
       <div class="header-right">
         <button class="profile-btn" (click)="toggleProfile()" title="View profile">
           <img [src]="profilePhoto()" alt="Profile" class="profile-photo" />
@@ -152,7 +152,8 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>&copy; 2025 Micro Jira. Built with Angular & ASP.NET Core</p><button (click)="resetTasks()" class="btn btn-sm reset-btn" title="Reset page to the original state"> 🔄 Reset Page</button>
+    <p>&copy; 2025 Micro Jira. Built with Angular & ASP.NET Core</p>
+    <button (click)="resetTasks()" class="btn btn-sm reset-btn" title="Reset page to the original state"> 🔄 Reset Page</button>
   </footer>
 </div>
 
