@@ -55,8 +55,18 @@ body {
 
 .header-left {
   flex: 1;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
 }
+
+.header-title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 
 .header-right {
   flex-shrink: 0;
@@ -728,9 +738,6 @@ body {
 /* 2. Global Background/Text */
 .app-container.dark-mode {
     background-color: #121212; /* Deep Black Background for the Body */
-}
-.app-container.dark-mode body {
-    background-color: #121212; /* Ensure body also matches */
 }
 
 /* 3. Header (Gradient Replacement) */

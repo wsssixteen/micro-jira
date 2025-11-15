@@ -1,4 +1,4 @@
-<div class="app-container">
+<div class="app-container" [class.dark-mode]="isDarkMode()">
   <!-- Header -->
   <header class="header">
     <div class="container-lg header-content">
@@ -8,8 +8,10 @@
           <span *ngIf="isDarkMode()">🌙</span>
         </button>
 
-        <h1 class="header-title">⚡ Micro Jira</h1>
-        <p class="header-subtitle">Lightweight personal task management</p>
+        <div class="header-title-group">
+          <h1 class="header-title">⚡ Micro Jira</h1>
+          <p class="header-subtitle">Lightweight personal task management</p>
+        </div>
       </div>
       <div class="header-right">
         <button class="profile-btn" (click)="toggleProfile()" title="View profile">
