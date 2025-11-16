@@ -46,8 +46,7 @@
       <div class="card-body">
         <form (submit)="$event.preventDefault(); addTask()">
             <div class="input-group">
-              <app-task-input></app-task-input>
-            <!--input 
+            <input 
               id="newTitle" 
               name="newTitle" 
               type="text"
@@ -55,7 +54,7 @@
               [ngModel]="newTitle()" 
               (ngModelChange)="newTitle.set($event)" 
               placeholder="What do you need to do today?" 
-            /-->
+            />
             <button type="submit" class="btn btn-primary btn-lg">
               <span class="plus">✚</span> Add
             </button>
