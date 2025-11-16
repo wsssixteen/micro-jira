@@ -52,13 +52,19 @@ export class App {
   private isDeleting: boolean = false;
   private typingSpeed: number = 100;
   private typingTimer: any;
+  private typingInterval: any = null;
+  private typingTimeout: any = null;
 
   ngOnInit(): void {
-    this.startTypingAnimation();
+    if (isPlatformBrowser(this.platformId)) {
+      this.startTypingAnimation();
+    }
   }
 
   ngOnDestroy(): void {
-    this.stopTypingAnimation();
+    if (isPlatformBrowser(this.platformId)) {
+      this.stopTypingAnimation();
+    }
   }
 
   // UI toggles
@@ -214,15 +220,21 @@ export class App {
   // implement dynamic placeholder typing effect
   // Starts the animation loop
   startTypingAnimation(): void {
-    if (this.typingTimer) {
-      clearInterval(this.typingTimer);
+    if (this.typingInterval) {
+      clearInterval(this.typingInterval);
     }
-    this.typingTimer = setInterval(() => this.typeWriter(), this.typingSpeed);
+    this.typingInterval = setInterval(() => this.typeWriter(), this.typingSpeed);
   }
 
-  // Clears the interval to stop the animation
   stopTypingAnimation(): void {
-    clearInterval(this.typingTimer);
+    if (this.typingInterval) {
+      clearInterval(this.typingInterval);
+      this.typingInterval = null;
+    }
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+      this.typingTimeout = null;
+    }
   }
 
   // The core logic for typing/deleting characters
@@ -230,23 +242,23 @@ export class App {
     const currentPhrase = this.placeholders[this.phraseIndex];
 
     if (!this.isDeleting) {
-      // TYPING FORWARD
       this.currentPlaceholder.set(currentPhrase.substring(0, this.charIndex + 1));
       this.charIndex++;
 
       if (this.charIndex === currentPhrase.length) {
         this.isDeleting = true;
-        this.pauseAndRestart(2000); // Pause at the end
+        this.pauseAndRestart(2000);
       }
     } else {
-      // DELETING BACKWARD
-      this.currentPlaceholder.set(currentPhrase.substring(0, this.charIndex - 1));
-      this.charIndex--;
+      if (this.charIndex > 0) {
+        this.currentPlaceholder.set(currentPhrase.substring(0, this.charIndex - 1));
+        this.charIndex--;
+      }
 
       if (this.charIndex === 0) {
         this.isDeleting = false;
-        this.phraseIndex = (this.phraseIndex + 1) % this.placeholders.length; // Next phrase
-        this.pauseAndRestart(50); // Short pause before starting new phrase
+        this.phraseIndex = (this.phraseIndex + 1) % this.placeholders.length;
+        this.pauseAndRestart(50);
       }
     }
   }
