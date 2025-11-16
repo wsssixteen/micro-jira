@@ -5,14 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { TaskService, TaskItem } from './services/task.service';
 import { isPlatformBrowser } from '@angular/common';
 // added due to reset
-import { switchMap } from 'rxjs/operators'; 
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, CommonModule, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
-  standalone: true
+  standalone: true,
 })
 export class App {
   protected readonly title = signal('task-manager-ui');
@@ -26,13 +26,40 @@ export class App {
   editingId = signal<number | null>(null);
   editTitle = signal('');
   isDarkMode = signal(false);
-  
+
   // Profile state
   showProfile = signal(false);
   profilePhoto = signal('/photo.jpg');
   profileName = signal('Ahmad Ridhwan Anuar');
   profileTitle = signal('Systems Engineer');
-  profileBio = signal('Technology enthusiast that loves implementing efficient solutions and continuous learning.');
+  profileBio = signal(
+    'Technology enthusiast that loves implementing efficient solutions and continuous learning.'
+  );
+
+  // Dynamic placeholder
+  currentPlaceholder = signal('');
+  private placeholders: string[] = [
+    'Fix bugs...',
+    'Code review...',
+    'Team meeting...',
+    'Reply email...',
+    'Design UI...',
+    'Update documentation...',
+    'Deploy to production...',
+  ];
+  private phraseIndex: number = 0;
+  private charIndex: number = 0;
+  private isDeleting: boolean = false;
+  private typingSpeed: number = 100;
+  private typingTimer: any;
+
+  ngOnInit(): void {
+    this.startTypingAnimation();
+  }
+
+  ngOnDestroy(): void {
+    this.stopTypingAnimation();
+  }
 
   // UI toggles
   // collapsed by default for portfolio presentation
@@ -42,15 +69,15 @@ export class App {
 
   // convenience getters for view
   get activeTasks() {
-    return this.tasks().filter(t => !t.isComplete);
+    return this.tasks().filter((t) => !t.isComplete);
   }
 
   get completedTasks() {
-    return this.tasks().filter(t => t.isComplete);
+    return this.tasks().filter((t) => t.isComplete);
   }
 
   toggleCompleted(): void {
-    this.showCompleted.update(v => !v);
+    this.showCompleted.update((v) => !v);
   }
 
   constructor(private taskService: TaskService) {
@@ -67,7 +94,7 @@ export class App {
   }
 
   toggleDarkMode(): void {
-    this.isDarkMode.update(value => {
+    this.isDarkMode.update((value) => {
       const newMode = !value;
 
       if (isPlatformBrowser(this.platformId)) {
@@ -77,7 +104,6 @@ export class App {
       return newMode;
     });
   }
-
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
@@ -89,7 +115,7 @@ export class App {
       error: (err) => {
         console.error('Failed to load tasks', err);
         this.initialized.set(true);
-      }
+      },
     });
   }
 
@@ -100,10 +126,10 @@ export class App {
     this.taskService.addTask({ title }).subscribe({
       next: (created) => {
         // append to local list
-        this.tasks.update(current => [...current, created]);
+        this.tasks.update((current) => [...current, created]);
         this.newTitle.set('');
       },
-      error: (err) => console.error('Failed to add task', err)
+      error: (err) => console.error('Failed to add task', err),
     });
   }
 
@@ -111,9 +137,9 @@ export class App {
     if (!id) return;
     this.taskService.deleteTask(id).subscribe({
       next: () => {
-        this.tasks.update(current => current.filter(task => task.id !== id));
+        this.tasks.update((current) => current.filter((task) => task.id !== id));
       },
-      error: (err) => console.error('Failed to delete task', err)
+      error: (err) => console.error('Failed to delete task', err),
     });
   }
 
@@ -128,9 +154,11 @@ export class App {
     if (!id) return;
     this.taskService.toggleComplete(id).subscribe({
       next: (updated) => {
-        this.tasks.update(current => current.map(t => t.id === updated.id ? { ...t, isComplete: updated.isComplete } : t));
+        this.tasks.update((current) =>
+          current.map((t) => (t.id === updated.id ? { ...t, isComplete: updated.isComplete } : t))
+        );
       },
-      error: (err) => console.error('Failed to toggle complete', err)
+      error: (err) => console.error('Failed to toggle complete', err),
     });
   }
 
@@ -149,34 +177,104 @@ export class App {
     const updatedTask = { id, title: this.editTitle() };
     this.taskService.updateTask(id, updatedTask).subscribe({
       next: () => {
-        this.tasks.update(current =>
-          current.map(t => (t.id === id ? { ...t, title: this.editTitle() } : t))
+        this.tasks.update((current) =>
+          current.map((t) => (t.id === id ? { ...t, title: this.editTitle() } : t))
         );
         this.editingId.set(null);
         this.editTitle.set('');
       },
-      error: (err) => console.error('Failed to update task', err)
+      error: (err) => console.error('Failed to update task', err),
     });
   }
 
   resetTasks(): void {
     if (window.confirm('This will reset the tasks in the page. Continue?')) {
-      this.taskService.resetDemoData().pipe(
-        switchMap(() => {
-          console.log('Tasks successfully reset on the backend. Fetching reset lists...');
-          return this.taskService.getTasks();
-        })
-      ).subscribe({
-        next: (items) => {
-          console.log('Tasks successfully reset.');
-          this.tasks.set(items); 
-        },
-        error: (err) => console.error('Failed to reset tasks', err)
-      });
+      this.taskService
+        .resetDemoData()
+        .pipe(
+          switchMap(() => {
+            console.log('Tasks successfully reset on the backend. Fetching reset lists...');
+            return this.taskService.getTasks();
+          })
+        )
+        .subscribe({
+          next: (items) => {
+            console.log('Tasks successfully reset.');
+            this.tasks.set(items);
+          },
+          error: (err) => console.error('Failed to reset tasks', err),
+        });
     }
   }
 
   toggleProfile(): void {
-    this.showProfile.update(current => !current);
+    this.showProfile.update((current) => !current);
+  }
+
+  // implement dynamic placeholder typing effect
+  // Starts the animation loop
+  startTypingAnimation(): void {
+    if (this.typingTimer) {
+      clearInterval(this.typingTimer);
+    }
+    this.typingTimer = setInterval(() => this.typeWriter(), this.typingSpeed);
+  }
+
+  // Clears the interval to stop the animation
+  stopTypingAnimation(): void {
+    clearInterval(this.typingTimer);
+  }
+
+  // The core logic for typing/deleting characters
+  private typeWriter(): void {
+    const currentPhrase = this.placeholders[this.phraseIndex];
+
+    if (!this.isDeleting) {
+      // TYPING FORWARD
+      this.currentPlaceholder.set(currentPhrase.substring(0, this.charIndex + 1));
+      this.charIndex++;
+
+      if (this.charIndex === currentPhrase.length) {
+        this.isDeleting = true;
+        this.pauseAndRestart(2000); // Pause at the end
+      }
+    } else {
+      // DELETING BACKWARD
+      this.currentPlaceholder.set(currentPhrase.substring(0, this.charIndex - 1));
+      this.charIndex--;
+
+      if (this.charIndex === 0) {
+        this.isDeleting = false;
+        this.phraseIndex = (this.phraseIndex + 1) % this.placeholders.length; // Next phrase
+        this.pauseAndRestart(50); // Short pause before starting new phrase
+      }
+    }
+  }
+
+  // Helper to handle pauses between typing/deleting phases
+  private pauseAndRestart(delayMs: number): void {
+    this.stopTypingAnimation();
+    this.typingTimer = setTimeout(() => {
+      this.typingSpeed = 100; // Reset typing speed
+      this.typingTimer = setInterval(() => this.typeWriter(), this.typingSpeed);
+    }, delayMs);
+  }
+
+  // Event handler when the user focuses the input field.
+  onFocus(): void {
+    this.stopTypingAnimation();
+    // Set a final static placeholder when active
+    this.currentPlaceholder.set('Enter your new task...');
+  }
+
+  // Event handler when the user blurs the input field.
+  onBlur(): void {
+    // Resume animation only if the field is empty
+    if (this.newTitle().trim() === '') {
+      this.charIndex = 0;
+      this.isDeleting = false;
+      this.phraseIndex = (this.phraseIndex + 1) % this.placeholders.length;
+      this.startTypingAnimation();
+    }
   }
 }
