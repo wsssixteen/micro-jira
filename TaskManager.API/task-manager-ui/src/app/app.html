@@ -46,7 +46,8 @@
       <div class="card-body">
         <form (submit)="$event.preventDefault(); addTask()">
             <div class="input-group">
-            <input 
+              <app-task-input></app-task-input>
+            <!--input 
               id="newTitle" 
               name="newTitle" 
               type="text"
@@ -54,7 +55,7 @@
               [ngModel]="newTitle()" 
               (ngModelChange)="newTitle.set($event)" 
               placeholder="What do you need to do today?" 
-            />
+            /-->
             <button type="submit" class="btn btn-primary btn-lg">
               <span class="plus">✚</span> Add
             </button>
@@ -151,7 +152,7 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>&copy; 2025 Micro Jira. Built with Angular & ASP.NET Core.</p>
+    <p>&copy; 2025 Micro Jira. Built with Angular & ASP.NET Core. Deployed using GitHub & Docker Hub. Running on Azure services.</p>
     <button (click)="resetTasks()" class="btn btn-sm reset-btn" title="Reset page to the original state">
       <span>🔄</span>
       <!--span>Reset Page</span-->
