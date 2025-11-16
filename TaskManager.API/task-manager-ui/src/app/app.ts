@@ -57,6 +57,11 @@ export class App {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      this.loadTasks();
+      const savedMode = localStorage.getItem('theme');
+      if (savedMode === 'dark') {
+        this.isDarkMode.set(true);
+      }
       this.startTypingAnimation();
     }
   }
@@ -266,9 +271,9 @@ export class App {
   // Helper to handle pauses between typing/deleting phases
   private pauseAndRestart(delayMs: number): void {
     this.stopTypingAnimation();
-    this.typingTimer = setTimeout(() => {
-      this.typingSpeed = 100; // Reset typing speed
-      this.typingTimer = setInterval(() => this.typeWriter(), this.typingSpeed);
+    this.typingTimeout = setTimeout(() => {
+      this.typingSpeed = 100;
+      this.startTypingAnimation();
     }, delayMs);
   }
 
