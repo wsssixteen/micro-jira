@@ -861,3 +861,8 @@ body {
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+/* 10. Profile card */
+.app-container.dark-mode .profile-card {
+  background: #1e1e1e;
+}
