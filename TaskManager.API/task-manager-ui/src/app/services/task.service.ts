@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment.prod';
 import { tap } from 'rxjs/operators';
+import { ConfigService } from './config.service';
 
 export interface TaskItem {
   id?: number;
@@ -15,9 +15,11 @@ export interface TaskItem {
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly API_URL = environment.apiUrl + '/tasks';
+  private API_URL: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {
+    this.API_URL = this.configService.getApiUrl() + '/api/tasks';
+  }
 
   getTasks(): Observable<TaskItem[]> {
     console.log('TRACE 2: HTTP GET request sent to API URL:', this.API_URL);

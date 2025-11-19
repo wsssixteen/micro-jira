@@ -1,35 +1,14 @@
 services:
-  # 1. SQL Server Container
-  db:
-    image: mcr.microsoft.com/mssql/server:2022-latest # Using a standard SQL Server image
-    container_name: taskmanager-db
-    environment:
-      # CRITICAL: Set a strong password (minimum 8 characters)
-      SA_PASSWORD: "StrongP@ssw0rd!" 
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433" # Optional: Map port for external tools (like SSMS)
-    volumes:
-      - sqlserver_data:/var/opt/mssql # Persist data across container restarts
-    
-  # 2. Your ASP.NET Core API Container
+  # ASP.NET Core API Container (uses Railway PostgreSQL)
   api:
-    image: taskmanager-api # Name of the image you built previously
+    image: wsssixteen/microjira:v3
     container_name: taskmanager-api-container
     build:
       context: .
-      dockerfile: Dockerfile # Points to the Dockerfile in the current directory
+      dockerfile: Dockerfile
     ports:
       - "9000:8080"
-    depends_on:
-      - db # Ensure the database starts before the API
     environment:
-      # CRITICAL: Update the Connection String
-      # The server name is the service name defined above: 'db'
-      ConnectionStrings__DefaultConnection: "Server=db;Database=TaskManagerDB;User Id=sa;Password=StrongP@ssw0rd!;Encrypt=False;TrustServerCertificate=True"
-
-    # CRITICAL ADDITION: Use the wait script before starting the API
-    command: ["./wait-for-it.sh", "db", "1433", "dotnet", "TaskManager.API.dll"]
-
-volumes:
-  sqlserver_data: # Define the named volume for persistence
+      # Railway PostgreSQL Connection String
+      ConnectionStrings__DefaultConnection: "Host=yamanote.proxy.rlwy.net;Port=46480;Username=postgres;Password=dXYhBzUvvbPwpOybCiiZLnwNPdoyEuKC;Database=railway;Pooling=true;SSL Mode=Require;Trust Server Certificate=true"
+      ASPNETCORE_ENVIRONMENT: "Production"

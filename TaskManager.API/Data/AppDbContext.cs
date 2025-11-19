@@ -67,14 +67,14 @@ namespace TaskManager.API.Data
                 }
             );
 
-            // Set the identity seed for next insert
+            // Let the provider handle identity/auto-increment for Id
             modelBuilder.Entity<TaskItem>().Property(e => e.Id)
-                .UseIdentityColumn(seed: 53, increment: 1);
+                .ValueGeneratedOnAdd();
 
-            // Ensure CreatedAt has a database default (UTC) for runtime inserts
+            // Set a database default for CreatedAt (provider-agnostic SQL)
             modelBuilder.Entity<TaskItem>()
                 .Property(e => e.CreatedAt)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }

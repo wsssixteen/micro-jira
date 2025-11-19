@@ -23,9 +23,5 @@ EXPOSE 8080
 # Copy the published output from the build stage
 COPY --from=build /app/publish .
 
-# Make the wait script executable
-COPY wait-for-it.sh .
-RUN chmod +x ./wait-for-it.sh
-
 # Set the entry point to run the published DLL
 ENTRYPOINT ["dotnet", "TaskManager.API.dll"]

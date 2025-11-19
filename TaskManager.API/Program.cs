@@ -9,27 +9,25 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register EF Core DbContext with connection string
+// Register EF Core DbContext with PostgreSQL (Railway)
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-
-    options.UseSqlServer(
-        conn,
-        sqlOptions =>
-        {
-            sqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 5,
-                maxRetryDelay: TimeSpan.FromSeconds(10),
-                errorNumbersToAdd: null);
-        });
+    options.UseNpgsql(conn);
 });
 
 // Allow CORS for frontend
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
-        policy.WithOrigins("https://lemon-water-02d583710.3.azurestaticapps.net")
+    var allowedOrigins = new List<string> { "https://lemon-water-02d583710.3.azurestaticapps.net" };
+    
+    if (builder.Environment.IsDevelopment())
+    {
+        allowedOrigins.Add("http://localhost:4200");
+    }
+    
+    options.AddPolicy("AllowAll", policy =>
+        policy.WithOrigins(allowedOrigins.ToArray())
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
