@@ -16,22 +16,18 @@ export class ConfigService {
   constructor(private http: HttpClient) {}
 
   async loadConfig(): Promise<AppConfig> {
-    if (this.config) {
-      return this.config;
-    }
+    if (this.config) return this.config;
 
     try {
-      this.config = await firstValueFrom(this.http.get<AppConfig>('/config.json'));
-      return this.config;
+      // Try local fonfig first
+      this.config = await firstValueFrom(this.http.get<AppConfig>('/config.local.json'));
+      //return this.config;
     } catch (error) {
-      console.error('Failed to load config.json, using defaults:', error);
-      // Fallback to defaults
-      this.config = {
-        production: false,
-        apiUrl: 'http://localhost:5215'
-      };
-      return this.config;
+      // Fallback to production config
+      this.config = await firstValueFrom(this.http.get<AppConfig>('/config.json'));
+      //return this.config;
     }
+    return this.config;
   }
 
   getConfig(): AppConfig {

@@ -1,4 +1,4 @@
 {
-  "production": false,
-  "apiUrl": "http://localhost:5215"
+  "production": true,
+  "apiUrl": "https://microjira.reddesert-44c5d750.westeurope.azurecontainerapps.net"
 }
