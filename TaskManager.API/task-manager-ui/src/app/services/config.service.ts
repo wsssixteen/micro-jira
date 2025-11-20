@@ -19,10 +19,10 @@ export class ConfigService {
     if (this.config) return this.config;
 
     try {
-      // Try local fonfig first
+      // Try production config first
       this.config = await firstValueFrom(this.http.get<AppConfig>('/config.json'));
     } catch (error) {
-      // Fallback to production config
+      // Fallback to local config
       this.config = await firstValueFrom(this.http.get<AppConfig>('/config.local.json'));
     }
     return this.config;
