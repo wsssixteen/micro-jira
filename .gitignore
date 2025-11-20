@@ -1,0 +1,71 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# IDE/editor
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.psess
+*.vsp
+*.vspx
+*.pidb
+
+# VS Code (keep shared project files)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# .NET build output
+**/bin/
+**/obj/
+**/TestResults/
+**/artifacts/
+**/GeneratedFiles/
+*.VisualState.xml
+*.build.log
+*.tlog
+*.cache
+*.coverage
+*.coveragexml
+
+# EF / local databases
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+Migrations/**/Snapshot.cs
+
+# Node / Angular
+**/node_modules/
+**/dist/
+**/out-tsc/
+**/.angular/cache
+**/tmp/
+**/bazel-out/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+**/coverage/
+**/.sass-cache/
+**/.history/
+**/connect.lock
+**/libpeerconnection.log
+**/testem.log
+**/__screenshots__/
+
+# Env & secrets
+.env
+.env.*.local
+se
